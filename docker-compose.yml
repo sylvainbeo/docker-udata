@@ -24,7 +24,7 @@ services:
       - redis:redis
     volumes:
       - udata-fs:/udata/fs
-      - ../udata-front-sbe:/src/udata-front
+      - ../udata-front-inter-sbe:/src/udata-front
     ports:
       - "7010:7010"
     command: serve --host 0.0.0.0 --port 7010 --debugger --reload
