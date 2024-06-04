@@ -1,23 +1,23 @@
 services:
 
   mongodb:
-    container_name: gdh-db-mongo
+    container_name: gdh-inter-db-mongo
     image: mongo:6.0.4
     volumes:
       - mongo-data:/data/db
     ports:
-      - "27017:27017"
+      - "27018:27018"
 
   redis:
-    container_name: gdh-bus-redis
+    container_name: gdh-inter-bus-redis
     image: redis
     volumes:
       - redis-data:/data
     ports:
-      - "6379:6379"
+      - "6380:6380"
 
   udata:
-    container_name: gdh-app-udata
+    container_name: gdh-inter-app-udata
     build: .
     links:
       - mongodb:mongodb
@@ -26,8 +26,8 @@ services:
       - udata-fs:/udata/fs
       - ../udata-front-sbe:/src/udata-front
     ports:
-      - "7000:7000"
-    command: serve --host 0.0.0.0 --debugger --reload
+      - "7010:7010"
+    command: serve --host 0.0.0.0 --port 7010 --debugger --reload
     environment:
       - FLASK_DEBUG=true
 
@@ -39,10 +39,10 @@ volumes:
 
 networks:
   default:
-    name: gdh-udata
+    name: gdh-inter-udata
     external: true
     ipam:
       driver: bridge
       config:
-        - subnet: 172.17.0.0/29
+        - subnet: 172.16.0.0/29
 
